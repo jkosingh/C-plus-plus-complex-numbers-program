@@ -1,0 +1,180 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Complex
+{
+public:
+	Complex(float=1.0,float=1.0);
+	void set_real_and_imag (float, float);
+	void print_complex();
+	void print_magnitude();  //Print the Magnitude of the Complex number.
+	float get_real(); // mutator for access of private function variable real
+	float get_imaginary();// mutator for access of private function variable imaginary
+	friend Complex operator +(const Complex& first, const Complex& second); // overloading function for +
+	friend Complex operator -(const Complex& first, const Complex& second); // overloading function for -
+	friend Complex operator *(const Complex& first, const Complex& second); // overloading function for *
+	friend Complex operator /(const Complex& first, const Complex& second);
+	friend bool operator ==(const Complex& first, const Complex& second);
+	friend bool operator !=(const Complex& first, const Complex& second); // protoype for overloading bools
+	friend bool operator <(const Complex& first, const Complex& second);
+	friend bool operator >(const Complex& first, const Complex& second);
+/*
+
+WRITE MISSING FUNCTION DECLARATIONS HERE
+
+*/
+	friend ostream &operator<<(ostream &, Complex &); // overloads cout,cin operators
+	friend istream &operator>>(istream &, Complex &);
+  // CAN You OVERLOAD AN OPERATOR USING "friend" keyword ????
+
+private:
+	float real;       //Real part
+	float imaginary;  //Imaginary part
+	float calculate_magnitude();   //Returns the magnitude of the Complex number.
+
+};
+    float Complex::get_real() // function call to access real through  get_real() function(accessor)
+    {
+        return real;
+    }
+
+    float Complex:: get_imaginary()// function call to access real through  get_real() function(accessor)
+    {
+        return imaginary;
+    }
+
+
+    float Complex:: calculate_magnitude()
+    {
+
+        return(sqrt(real*real +imaginary*imaginary));
+    }
+
+    void Complex:: print_magnitude()
+    {
+
+        cout << calculate_magnitude() << endl;
+    }
+
+
+Complex::Complex(float m, float n)
+{
+	set_real_and_imag(m,n);
+}
+
+/*--------------------------------------------------------*/
+
+void Complex::set_real_and_imag(float x, float y)
+{
+
+	real = x;
+	imaginary = y;
+
+}
+
+/*--------------------------------------------------------*/
+
+void Complex::print_complex()
+{
+	cout<<real<<" + j"<<imaginary<<endl;
+}
+
+
+/*--------------------------------------------------------*/
+
+ostream &operator<<(ostream &output, Complex &object)
+{
+	output<<object.real<<" + j"<<object.imaginary<<endl;
+	return output;
+}
+
+/*--------------------------------------------------------*/
+
+istream &operator>>(istream &input, Complex &object)
+{
+	cout<<"Enter real, imaginary:"<<endl;
+	input>>object.real;
+	input>>object.imaginary;
+	return input;
+}
+
+Complex operator +(const Complex& first, const Complex& second)
+{
+    Complex temp; // using temporary object declaration to acess real and imaginary variables of  class Complex
+    temp.real= first.real + second.real;
+    temp.imaginary = first.imaginary + second.imaginary;
+    return temp;
+}
+Complex operator -(const Complex& first, const Complex& second)
+{
+    Complex temp; //  used to return more than one calculation
+    temp.real= first.real - second.real;
+    temp.imaginary = first.imaginary - second.imaginary;
+    return temp;
+}
+Complex operator *(const Complex& first, const Complex& second)
+{
+    Complex temp;
+    temp.real= first.real * second.real - first.imaginary * second.imaginary;
+    temp.imaginary = first.real * second.imaginary + first.imaginary * second.real;
+    return temp;
+}
+Complex operator /(const Complex& first, const Complex& second)
+{
+        Complex temp;
+        temp.real = (first.real*second.real + first.imaginary*second.imaginary)/(second.real*second.real+second.imaginary*second.imaginary);
+        temp.imaginary = (first.imaginary*second.real - first.real*second.imaginary)/(second.real*second.real+second.imaginary*second.imaginary);
+        return temp;
+}
+bool operator ==(const Complex& first, const Complex& second)
+{
+    return (first.real == second.real && first.imaginary == second.imaginary); // first real number entered is the same as the second real number entered and first imaginary is equal to second imaginary entered
+}
+bool operator !=(const Complex& first, const Complex& second)
+{
+    return (first.real != second.real || first.imaginary != second.imaginary);
+}
+bool operator >(const Complex& first, const Complex& second)
+{
+    return (first.real * first.real + first.imaginary * first.imaginary) > (second.real * second.real + second.imaginary * second.imaginary);
+}
+bool operator <(const Complex& first, const Complex& second)
+{
+    return (sqrt(first.real * first.real + first.imaginary * first.imaginary)) < (sqrt(second.real * second.real + second.imaginary * second.imaginary));
+}
+
+/*--------------------------------------------------------*/
+
+int main()
+{
+	Complex x(3,4),y(3,4),z1,z2,z3,z4;
+	cout<<"x=";
+	x.print_complex();
+	x.print_magnitude();
+	cout<<"y=";
+	y.print_complex();
+	y.print_magnitude();
+
+	// Complex Numbers  k & l are of Class type Complex
+	Complex k,l,z6,z7,z8,z9,z10;
+	cin>>k>>l; // Input two Complex numbers k and l  , where k = 3 + j4 and l = 4 + j5
+	if(k==l) // You need to define '==' operation for this line to work
+	{cout<<"These 2 complex numbers are equal."<<endl;}
+	if(k!=l) // You need to define '!=' operation for this line to work
+	{cout<<"These 2 complex numbers are not equal."<<endl;}
+    if(k>l) // You need to define '>' operation for this line to work
+	{cout<<"k is bigger than l."<<endl;}
+	if(k<l) // You need to define '<' operation for this line to work
+	{cout<<"k is smaller than l."<<endl;}
+	z6=k+l; // You need to define '+' operation for this line to work
+	z7=k-l; // You need to define '-' operation for this line to work
+	z8=k*l; // You need to define '*' operation for this line to work
+	z9=k/l; // You need to define '=' operation for this line to work
+
+	cout<<"z6="<<z6<<"z7="<<z7<<"z8="<<z8<<"z9="<<z9;
+	cout<<"k="<<k<<"l="<<l;
+
+	return(0);
+}
+
